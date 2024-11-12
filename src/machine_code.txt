@@ -1,0 +1,8 @@
+Assembly: ADD R1, R2, R3
+Machine Code: 0001   11
+
+Assembly: STORE R1, 10
+Machine Code: 0100  00001010
+
+Assembly: LOAD 20
+Machine Code: 0011  00001010
