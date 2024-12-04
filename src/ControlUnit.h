@@ -24,7 +24,7 @@ public:
         programCounter++;
     }
 
-    void setInstruction(const string& instruction) {
+    void setInstruction(const string & instruction) {
         instructionRegister = instruction;
     }
 
