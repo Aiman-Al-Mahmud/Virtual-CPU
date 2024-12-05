@@ -1,54 +1,68 @@
-#### *main.cpp.md*
+## main.md - Virtual CPU Emulator Documentation
 
-```markdown
-# Main Program Documentation
+This document provides an overview of the `main.cpp` program, which implements a simple Virtual CPU Emulator. 
 
-## Overview
-The main program demonstrates the Fetch-Decode-Execute cycle by integrating Memory, Registers, ALU, Control Unit, and Instruction Decoder.
+**1. Introduction**
 
-## Workflow
+This program simulates a central processing unit (CPU) by executing a set of instructions in memory. It follows the classic Fetch-Decode-Execute cycle found in most processors. 
 
-### 1. Load Instructions into Memory
-- The program is defined as a set of instructions and loaded into the Memory module.
+**2. Functionality**
 
-### 2. Fetch-Decode-Execute Cycle
-- *Fetch*: Instructions are fetched from memory based on the Program Counter (PC).
-- *Decode*:
-  - Instructions are translated into hexadecimal for debugging using the InstructionDecoder.
-  - Operation and operands are identified.
-- *Execute*:
-  - Depending on the operation, the ALU processes the operands.
-  - Results are stored in Registers.
-  - NOP operations are ignored.
+The emulator integrates several components:
 
-### 3. State Updates
-- The Program Counter (PC) is incremented after each instruction.
-- Register and memory states are printed after execution.
+* **Memory:** Stores instructions and data for processing.
+* **Registers:** Hold temporary values used during instruction execution.
+* **Arithmetic Logic Unit (ALU):** Performs arithmetic and logical operations on data.
+* **Control Unit:** Controls the flow of the program by managing the Fetch-Decode-Execute cycle.
+* **Instruction Decoder:** Decodes instructions into their operation and operand components.
 
-## Key Functions in main()
+**3. Program Flow**
 
-### memory.loadInstructions(program)
-- *Purpose*: Loads the program instructions into memory.
+The program operates in a continuous loop:
 
-### memory.fetchInstruction(controlUnit.getProgramCounter())
-- *Purpose*: Fetches the instruction at the address pointed to by the PC.
+1. **Instruction Loading:**
+    * Reads a set of instructions from a source (e.g., hardcoded, file).
+    * Loads these instructions into memory for access.
 
-### decodeToHex(instruction)
-- *Purpose*: Decodes the current instruction into its hexadecimal equivalent.
+2. **Fetch-Decode-Execute Cycle:**
+    * **Fetch:**
+        * Retrieves the current instruction from memory based on the Program Counter (PC) register.
+        * The PC points to the next instruction to be executed.
+    * **Decode:**
+        * The Instruction Decoder parses the fetched instruction into:
+            * A hexadecimal representation for debugging purposes.
+            * Its components (operation and operands).
+    * **Execute:**
+        * The ALU executes the decoded operation on the specified operands stored in registers.
+        * Supported operations include `ADD`, `SUB`, `NOT`, and `NOP` (No Operation).
+        * The results are stored back into registers.
 
-### alu.execute(op, registers.get(r2), registers.get(r3))
-- *Purpose*: Executes the decoded operation on the operands.
+3. **State Updates:**
+    * After each instruction execution:
+        * The Program Counter (PC) is incremented to point to the next instruction.
+        * The current state of the registers is printed  for debugging purposes.
 
-### registers.print()
-- *Purpose*: Prints the current state of the registers.
+4. **Loop Continuance:**
+    * The program continues looping through the Fetch-Decode-Execute cycle until all instructions in memory have been processed.
 
-## Example Execution
-1. *Instruction 1*: ADD 0 1 2 (R0 = R1 + R2).
-   - Decoded: 0x010102.
-   - Register updates: R0 gets the sum of R1 and R2.
+**4. Key Functions**
 
-2. *Instruction 2*: NOT 2 (R2 = ~R2).
-   - Decoded: 0x0302.
-   - Register updates: R2 gets the bitwise complement of its value.
+* **memory.loadInstructions(program):**  
+    * Loads a set of instructions (represented as a vector of strings) into memory.
 
-3. *Final Output*:
+**5. Example Output**
+
+```
+Decoded Instruction (Hex): 0x010102
+Registers: R0=3 R1=1 R2=2 R3=0
+
+Decoded Instruction (Hex): 0x020103
+Registers: R0=3 R1=3 R2=2 R3=0
+
+Decoded Instruction (Hex): 0x0302
+Registers: R0=3 R1=3 R2=-3 R3=0
+
+Decoded Instruction (Hex): 0x00
+Registers: R0=3 R1=3 R2=-3 R3=0
+```
+
