@@ -8,53 +8,58 @@ using namespace std;
 
 class Memory {
 private:
-    vector<string> instructions; // Stores the program's instructions
-    vector<int> data;            // Stores data for memory addressing
-public:
-    Memory() : data(256, 0) {}   // Initialize with 256 memory slots (example)
+    vector<int> data;  // Memory storage for 256 bytes (you can adjust this size as needed)
+    vector<string> instructions;  // Store instructions for fetch-decode-execute
 
-    // Load instructions into memory
+public:
+    // Constructor to initialize memory with 256 zeros
+    Memory() : data(256, 0) {}
+
+    // Write data to a specific address
+    void writeData(int address, int value) {
+        if (address >= 0 && address < data.size()) {
+            data[address] = value; // Write to memory
+        } else {
+            cerr << "Invalid data address: " << address << endl;
+        }
+    }
+
+    // Read data from a specific address
+    int readData(int address) const {
+        if (address >= 0 && address < data.size()) {
+            return data[address]; // Return value from memory
+        } else {
+            cerr << "Invalid data address: " << address << endl;
+            return -1; // Invalid read, return error value
+        }
+    }
+
+    // Print memory content, displaying non-zero values for clarity
+    void printMemory() const {
+        cout << "Memory Content:\n";
+        for (int i = 0; i < data.size(); ++i) {
+            if (data[i] != 0) {  // Only print non-zero values
+                cout << "[" << i << "]=" << data[i] << " ";
+                if (i % 8 == 7) cout << endl; // Break line for every 8 entries
+            }
+        }
+        cout << endl;
+    }
+
+    // Load instructions into memory for fetch-decode-execute cycle
     void loadInstructions(const vector<string>& program) {
         instructions = program;
     }
 
-    // Fetch instruction at a specific address
-    string fetchInstruction(int address) const {
-        if (address >= 0 && address < instructions.size()) {
-            return instructions[address];
+    // Fetch an instruction from memory at the current program counter
+    string fetchInstruction(int pc) const {
+        if (pc >= 0 && pc < instructions.size()) {
+            return instructions[pc];
         } else {
-            cerr << "Invalid instruction address: " << address << endl;
-            return "NOP";
+            cerr << "Invalid program counter: " << pc << endl;
+            return "";
         }
-    }
-
-    // Access memory data
-    void writeData(int address, int value) {
-        if (address >= 0 && address < data.size()) {
-            data[address] = value;
-        } else {
-            cerr << "Invalid data address: " << address << endl;
-        }
-    }
-
-    int readData(int address) const {
-        if (address >= 0 && address < data.size()) {
-            return data[address];
-        } else {
-            cerr << "Invalid data address: " << address << endl;
-            return 0;
-        }
-    }
-
-    // Print memory data
-    void printMemory() const {
-        cout << "Memory Data: ";
-        for (int i = 0; i < data.size(); ++i) {
-            cout << "[" << i << "]=" << data[i] << " ";
-            if (i % 8 == 7) cout << endl; // Line break for readability
-        }
-        cout << endl;
     }
 };
 
-#endif
+#endif // MEMORY_H

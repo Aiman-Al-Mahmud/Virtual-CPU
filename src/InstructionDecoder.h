@@ -9,7 +9,7 @@
 
 using namespace std;
 
-string InstructionDecoder;
+// Convert instruction to hexadecimal
 string decodeToHex(const string &instruction) {
     istringstream stream(instruction);
     string op;
@@ -35,13 +35,11 @@ string decodeToHex(const string &instruction) {
 
     // Encode operands as bytes
     for (const string &op : operands) {
-        int value = stoi(op); // Convert operand to integer
-        hexStream << setw(2) << setfill('0') << value;
+        int value = stoi(op); // Convert string operand to integer
+        hexStream << setw(2) << setfill('0') << value; //format the op two char hex num
     }
 
-
-        return hexStream.str();
-    }
-
+    return hexStream.str();
+}
 
 #endif
