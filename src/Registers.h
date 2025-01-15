@@ -2,42 +2,45 @@
 #define REGISTERS_H
 
 #include <iostream>
+#include <bitset>
+#include <vector>
+
 using namespace std;
 
 class Registers {
 private:
-    int reg[4]; // Example: 4 general-purpose registers (R0, R1, R2, R3)
+    vector<bitset<8>> reg; // Dynamic number of general-purpose registers
 public:
-    Registers() {
-        for (int i = 0; i < 4; ++i) {
-            reg[i] = 1;
+    Registers(int size) : reg(size) {
+        for (int i = 0; i < size; ++i) {
+            reg[i] = 0;
         }
     }
 
-    void set(int index, int value) {
-        if (index >= 0 && index < 4) {
-            reg[index] = value;
+    void set(int index, const string& value) {
+        if (index >= 0 && index < reg.size()) {
+            reg[index] = bitset<8>(value);
         } else {
             cerr << "Invalid register index: " << index << endl;
         }
     }
 
-    int get(int index) const {
-        if (index >= 0 && index < 4) {
-            return reg[index];
+    string get(int index) const {
+        if (index >= 0 && index < reg.size()) {
+            return reg[index].to_string();
         } else {
             cerr << "Invalid register index: " << index << endl;
-            return 0;
+            return "00000000";
         }
     }
 
     void print() const {
         cout << "Registers: ";
-        for (int i = 0; i < 4; ++i) {
+        for (int i = 0; i < reg.size(); ++i) {
             cout << "R" << i << "=" << reg[i] << " ";
         }
         cout << endl;
     }
 };
 
-#endif 
+#endif

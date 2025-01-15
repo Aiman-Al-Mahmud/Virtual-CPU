@@ -9,37 +9,29 @@
 
 using namespace std;
 
-// Convert instruction to hexadecimal
-string decodeToHex(const string &instruction) {
+// Convert instruction to binary machine code
+string decodeToBinary(const string &instruction) {
     istringstream stream(instruction);
-    string op;
-    vector<string> operands;
+    string op, operand1, operand2;
+    stream >> op >> operand1 >> operand2;
 
-    // Parse instruction into operation and operands
-    stream >> op;
-    string operand;
-    while (stream >> operand) {
-        operands.push_back(operand);
+    string binaryCode;
+
+    // Opcode and operands to binary
+    if (op == "ADD") binaryCode = "0001";
+    else if (op == "SUB") binaryCode = "0010";
+    else if (op == "LOAD") binaryCode = "0011";
+    else if (op == "STORE") binaryCode = "0100";
+    else binaryCode = "1111"; // Default for unrecognized opcodes
+
+    // Encode registers or immediate operands in binary
+    binaryCode += operand1 == "R0" ? "0000" : "0001"; // Simplified example
+
+    if (op == "LOAD" || op == "STORE") {
+        binaryCode += operand2;
     }
 
-    // Convert instruction to hexadecimal representation
-    ostringstream hexStream;
-    hexStream << "0x" << hex << uppercase;
-
-    // Encode operation (simplified: map each operation to a unique byte)
-    if (op == "ADD") hexStream << "01";
-    else if (op == "SUB") hexStream << "02";
-    else if (op == "NOT") hexStream << "03";
-    else if (op == "NOP") hexStream << "00";
-    else hexStream << "FF"; // Unknown operation
-
-    // Encode operands as bytes
-    for (const string &op : operands) {
-        int value = stoi(op); // Convert string operand to integer
-        hexStream << setw(2) << setfill('0') << value; //format the op two char hex num
-    }
-
-    return hexStream.str();
+    return binaryCode;
 }
 
 #endif

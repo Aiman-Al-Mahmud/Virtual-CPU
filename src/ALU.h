@@ -3,26 +3,33 @@
 
 #include <iostream>
 #include <string>
+#include <bitset>
+
 using namespace std;
 
 class ALU {
 public:
-    int execute(const string & operation, int operand1, int operand2 = 0) {
+    string execute(const string &operation, const string &operand1, const string &operand2 = "00000000") {
+        bitset<8> op1(operand1);
+        bitset<8> op2(operand2);
+        bitset<8> result;
+
         if (operation == "ADD") {
-            return operand1 + operand2;
+            result = op1.to_ulong() + op2.to_ulong();
         } else if (operation == "SUB") {
-            return operand1 - operand2;
+            result = op1.to_ulong() - op2.to_ulong();
         } else if (operation == "AND") {
-            return operand1 & operand2;
+            result = op1 & op2;
         } else if (operation == "OR") {
-            return operand1 | operand2;
+            result = op1 | op2;
         } else if (operation == "NOT") {
-            return ~operand1;
+            result = ~op1;
         } else {
             cerr << "Invalid operation: " << operation << endl;
-            return 0;
+            return "00000000";
         }
+        return result.to_string();
     }
 };
 
-#endif 
+#endif
