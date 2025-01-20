@@ -4,7 +4,7 @@
 #include <iostream>
 #include <string>
 #include <queue>
-#include <regex>
+#include <regex>  //regular expressions support kore 
 
 using namespace std;
 
@@ -19,8 +19,8 @@ public:
 
     string getInput() {
         if (!inputBuffer.empty()) {
-            string input = inputBuffer.front();
-            inputBuffer.pop();
+            string input = inputBuffer.front(); // collect first element 
+            inputBuffer.pop();  // remove first element
             return input;
         } else {
             return "";
@@ -31,7 +31,7 @@ public:
         return !inputBuffer.empty();
     }
 
-    bool isArithmeticExpression(const string &input) const {
+    bool isArithmeticExpression(const string & input) const {
         regex expr(R"(\d+[+\-*\/]\d+)");
         return regex_match(input, expr);
     }

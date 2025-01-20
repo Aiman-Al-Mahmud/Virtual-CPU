@@ -34,6 +34,10 @@ public:
         }
     }
 
+    int getRegistersCount() const {
+        return reg.size();
+    }
+
     void print() const {
         cout << "Registers: ";
         for (int i = 0; i < reg.size(); ++i) {

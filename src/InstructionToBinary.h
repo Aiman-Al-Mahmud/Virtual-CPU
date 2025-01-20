@@ -1,4 +1,3 @@
-// InstructionToBinary.h
 #ifndef INSTRUCTION_TO_BINARY_H
 #define INSTRUCTION_TO_BINARY_H
 
