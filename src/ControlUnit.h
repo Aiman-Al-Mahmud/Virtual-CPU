@@ -2,39 +2,62 @@
 #define CONTROLUNIT_H
 
 #include <iostream>
-#include <string>
-using namespace std;
+#include <stack>
+#include <string> // Include string header
 
 class ControlUnit {
 private:
     int programCounter;
-    string instructionRegister;
-public:
-    ControlUnit() : programCounter(0), instructionRegister("") {}
+    bool zeroFlag;
+    std::stack<int> subroutineStack;
+    std::string currentInstruction; // Added member
 
-    void setProgramCounter(int value) {
-        programCounter = value;
+public:
+    ControlUnit() : programCounter(0), zeroFlag(false) {}
+
+    int getProgramCounter() {
+        return programCounter;
     }
 
-    int getProgramCounter() const {
-        return programCounter;
+    void setProgramCounter(int pc) {
+        programCounter = pc;
+    }
+
+    bool getZeroFlag() {
+        return zeroFlag;
+    }
+
+    void setZeroFlag(bool flag) {
+        zeroFlag = flag;
+    }
+
+    void callSubroutine(int address) {
+        subroutineStack.push(programCounter + 1);
+        programCounter = address;
+    }
+
+    void returnFromSubroutine() {
+        if (!subroutineStack.empty()) {
+            programCounter = subroutineStack.top();
+            subroutineStack.pop();
+        }
     }
 
     void incrementProgramCounter() {
         programCounter++;
     }
 
-    void setInstruction(const string & instruction) {
-        instructionRegister = instruction;
+    void setInstruction(const std::string& instruction) {
+        currentInstruction = instruction;
     }
 
-    string getInstruction() const {
-        return instructionRegister;
+    std::string getInstruction() const {
+        return currentInstruction;
     }
 
-    void print() const {
-        cout << "PC: " << programCounter << ", IR: " << instructionRegister << endl;
+    void print() {
+        std::cout << "PC: " << programCounter << ", ZF: " << zeroFlag << std::endl;
     }
 };
 
-#endif
+#endif // CONTROLUNIT_H

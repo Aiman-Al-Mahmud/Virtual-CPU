@@ -6,9 +6,9 @@
 using namespace std;
 
 bool parseInstruction(const string& input, string& operation, string& operand1, string& operand2) {
-    regex pattern1(R"((\d+)\s*([\+\-\/])\s(\d+))");
+    regex pattern1(R"((\d+)\s*([\+\-\*/])\s*(\d+))");
     regex pattern2(R"((ADD|SUB|MUL|DIV)\((\d+),(\d+)\))");
-    regex pattern3(R"((R\d+)\s*([\+\-\/])\s(R\d+))");
+    regex pattern3(R"((R\d+)\s*([\+\-\*/])\s*(R\d+))");
     regex pattern4(R"((ADD|SUB|MUL|DIV)\((R\d+),(R\d+)\))");
     smatch match;
 
